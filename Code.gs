@@ -34,3 +34,29 @@ function getAgentNames() {
   return agents;
 }
 
+function getAgentNameInput() {
+  var ui = SpreadsheetApp.getUi();
+  var agents = getAgentNames();
+  var agent;
+  while (!agent) {
+    agent = ui.prompt('Enter Agent', 'Please enter the agent name the sheet should be created for.', ui.ButtonSet.OK_CANCEL);
+    
+    if (agent.getSelectedButton() !== ui.Button.OK) return;
+    
+    agent = agent.getResponseText().toLowerCase();
+    agent = agent[0].toUpperCase() + agent.slice(1);
+    
+    if (agents.indexOf(agent) === -1) {
+      ui.alert('Invalid Agent', 'No agents with the name "' + agent + '" were found in the agent names list in the "Settings" sheet. Please try again.', ui.ButtonSet.OK);
+      agent = null;
+    }
+  }
+  
+  return agent;
+}
+
+function confirm(title, message, buttons) {
+  var ui = SpreadsheetApp.getUi();
+  var input = ui.alert(title, message, buttons);
+  return input === ui.Button.OK || input === ui.Button.YES;
+}

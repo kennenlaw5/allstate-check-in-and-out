@@ -2,6 +2,34 @@ function newDaySetup() {
   duplicateMasterSheet(null, getAgentNames())
 }
 
+function singleAgentForToday() {
+  var ui = SpreadsheetApp.getUi();
+  if (!confirm('Are you sure?', 'You are about to generate a new sheet for an individual agent for today. Continue?', ui.ButtonSet.YES_NO)) return;
+  
+  duplicateMasterSheet('today', [getAgentNameInput()]);
+}
+
+function singleAgentForCustomDate() {
+  var ui = SpreadsheetApp.getUi();
+  if (!confirm('Are you sure?', 'You are about to generate a new sheet for an individual agent for a custom date. Continue?', ui.ButtonSet.YES_NO)) return;
+  
+  duplicateMasterSheet(null, [getAgentNameInput()]);
+}
+
+function multiAgentForToday() {
+  var ui = SpreadsheetApp.getUi();
+  if (!confirm('Are you sure?', 'You are about to generate a new sheet for all agents for today. Continue?', ui.ButtonSet.YES_NO)) return;
+  
+  duplicateMasterSheet('today', getAgentNames());
+}
+
+function multiAgentForCustomDate() {
+  var ui = SpreadsheetApp.getUi();
+  if (!confirm('Are you sure?', 'You are about to generate a new sheet for all agents for a custom date. Continue?', ui.ButtonSet.YES_NO)) return;
+  
+  duplicateMasterSheet(null, getAgentNames());
+}
+
 function duplicateMasterSheet(date, agents) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var ui = SpreadsheetApp.getUi();
@@ -77,7 +105,7 @@ function getDate(date) {
     }
   }
   
-  if (!date) {
+  if (!date || date === 'today') {
     date = new Date();
     date = [date.getMonth() + 1, date.getDate(), date.getFullYear()];
   }
